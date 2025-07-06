@@ -1,7 +1,6 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const fetch = require('node-fetch'); // si usás Node <18
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 const app = express();
 const PORT = 3001;
@@ -34,7 +33,7 @@ Ejemplo de formato:
 }`;
 
   try {
-    const response = await fetch('http://localhost:11434/api/generate', {
+    const response = await fetch('http://localhost:3001/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
