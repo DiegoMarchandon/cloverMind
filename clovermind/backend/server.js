@@ -33,7 +33,7 @@ app.post('/generate', async (req, res) => {
   }`;
 
   try {
-    const response = await fetch('http://localhost:3001/api/generate', {
+    const response = await fetch('http://localhost:11434/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -42,8 +42,18 @@ app.post('/generate', async (req, res) => {
         stream: false
       })
     });
+    const text = await response.text();
+    
+    
+    console.log("respuesta cruda de Ollama: ",text);
 
-    const data = await response.json();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("Error al parsear JSON:", e);
+      return res.status(500).json({ error: 'Respuesta no válida de Ollama' });
+    }
 
     const match = data.response.match(/\{[\s\S]*\}/);
     const jsonOutput = match ? JSON.parse(match[0]) : null;
