@@ -8,29 +8,29 @@ const PORT = 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/generar-arbol', async (req, res) => {
+app.post('/generate', async (req, res) => {
   const { texto } = req.body;
-
+  console.log('Texto recibido:', req.body.texto);
   const prompt = `
-Dado el siguiente texto:
-"${texto}"
-Genera un árbol mental en formato JSON. 
-Cada nodo debe tener "nombre" y, si aplica, un array de "hijos". 
-Usa claves simples: nombre, hijos. No agregues explicaciones.
+  Dado el siguiente texto:
+  "${texto}"
+  Genera un árbol mental en formato JSON. 
+  Cada nodo debe tener "nombre" y, si aplica, un array de "hijos". 
+  Usa claves simples: nombre, hijos. No agregues explicaciones.
 
-Ejemplo de formato:
-{
-  "nombre": "Productividad",
-  "hijos": [
-    {
-      "nombre": "Hábitos",
-      "hijos": [
-        { "nombre": "Mañana" },
-        { "nombre": "Noche" }
-      ]
-    }
-  ]
-}`;
+  Ejemplo de formato:
+  {
+    "nombre": "Productividad",
+    "hijos": [
+      {
+        "nombre": "Hábitos",
+        "hijos": [
+          { "nombre": "Mañana" },
+          { "nombre": "Noche" }
+        ]
+      }
+    ]
+  }`;
 
   try {
     const response = await fetch('http://localhost:3001/api/generate', {

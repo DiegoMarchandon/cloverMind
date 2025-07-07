@@ -9,7 +9,7 @@ export default function MainForm() {
     e.preventDefault();
     const textoUsuario = inputRef.current?.value || '';
     console.log(textoUsuario);
-    fetch('http://localhost:3001/generar-arbol',{
+    fetch('http://localhost:3001/generate',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({texto:textoUsuario})

@@ -10,25 +10,31 @@ app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
 
-app.post('/api/generate', (req: Request, res: Response) => {
-  const { model, prompt, stream } = req.body;
+app.post('/api/generate', (req: Request<{}, {}, { model: string; prompt: string; stream: boolean }>, res: Response) => {
+  try{
 
-  // Simula una respuesta JSON
-  const simulatedResponse = {
-    response: JSON.stringify({
-      nombre: "Productividad",
-      hijos: [
-        {
-          nombre: "Hábitos",
-          hijos: [
-            { nombre: "Mañana" },
-            { nombre: "Noche" }
-          ]
-        }
-      ]
-    })
-  };
-
-  res.json(simulatedResponse);
+    const { model, prompt, stream } = req.body;
+  
+    // Simula una respuesta JSON
+    const simulatedResponse = {
+      response: JSON.stringify({
+        nombre: "Productividad",
+        hijos: [
+          {
+            nombre: "Hábitos",
+            hijos: [
+              { nombre: "Mañana" },
+              { nombre: "Noche" }
+            ]
+          }
+        ]
+      })
+    };
+  
+    res.json(simulatedResponse);
+  } catch(error){
+    console.error('Error en /api/generate: ',error);
+    res.status(500).json({error: 'Error interno del servidor'});
+  }
 });
 export default app;
