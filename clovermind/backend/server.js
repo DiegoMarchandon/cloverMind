@@ -15,8 +15,10 @@ app.post('/generate', async (req, res) => {
   Dado el siguiente texto:
   "${texto}"
   Genera un árbol mental en formato JSON. 
-  Cada nodo debe tener "nombre" y, si aplica, un array de "hijos". 
-  Usa claves simples: nombre, hijos. No agregues explicaciones.
+  El árbol debe tener al menos tres niveles de profundidad. 
+  Cada nodo debe tener un campo nombre, y los hijos deben tener nombres específicos y variados, 
+  Si se usan términos genéricos como 'introducción', 'especialidad', 'conceptos básicos', 'semántica' y demás, 
+  especificar bien en los nodos hijos qué implican. Incluí temas avanzados, buenas prácticas y herramientas comunes.
 
   Ejemplo de formato:
   {
@@ -58,7 +60,7 @@ app.post('/generate', async (req, res) => {
     const match = data.response.match(/\{[\s\S]*\}/);
     const jsonOutput = match ? JSON.parse(match[0]) : null;
 
-    res.json({ arbol: jsonOutput });
+    res.json({ arbol: jsonOutput }); //retorno una respuesta JSON
   } catch (error) {
     console.error('Error generando árbol:', error);
     res.status(500).json({ error: 'Error generando árbol mental' });

@@ -2,9 +2,14 @@
 import Head from 'next/head';
 import { useRef } from 'react';
 
-export default function MainForm() {
+type MainFormProps = {
+  setTreeData: (data:any) => void;
+};
+
+export default function MainForm({setTreeData}:MainFormProps) {
 
   const inputRef = useRef<HTMLInputElement>(null);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const textoUsuario = inputRef.current?.value || '';
@@ -17,6 +22,7 @@ export default function MainForm() {
     .then(res => res.json())
     .then(data => {
       console.log('Árbol generado: ',data.arbol);
+      setTreeData(data.arbol); //actualizo el estado en page.tsx
     })
   }
   return (
