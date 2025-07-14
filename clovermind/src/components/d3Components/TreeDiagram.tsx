@@ -152,6 +152,16 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         });
     }
     
+    // evento zoom
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+    .scaleExtent([0.5, 3]) // zoom mínimo y máximo
+    .on("zoom", (event) => {
+      g.attr("transform", event.transform); // aplica zoom y pan al grupo g
+    });
+
+  d3.select(svgRef.current).call(zoom);
+
+
 
     // 1) creo función started
     /**
