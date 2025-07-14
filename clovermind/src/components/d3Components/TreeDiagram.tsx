@@ -141,6 +141,18 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     
     // acá defino el comportamiento drag
   
+    // 2) creo la función para actualizar los links
+    function updateLinks() {
+      g.selectAll('path')
+        .data(links)
+        .attr('d', d => {
+          const [sx, sy] = project(d.source.x, d.source.y);
+          const [tx, ty] = project(d.target.x, d.target.y);
+          return `M${sx},${sy}C${(sx + tx) / 2},${sy} ${(sx + tx) / 2},${ty} ${tx},${ty}`;
+        });
+    }
+    
+
     // 1) creo función started
     /**
      * @param SVGGElement this
@@ -164,6 +176,9 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         .attr('transform',
           `translate(${event.x-offsetX},${event.y-offsetY})`
         );
+        d.x = Math.atan2(event.y - offsetY, event.x - offsetX) + Math.PI / 2;
+        d.y = Math.sqrt((event.x - offsetX) ** 2 + (event.y - offsetY) ** 2);
+        updateLinks();
       }).on("end",function(){
         d3.select(this as SVGGElement).attr("stroke",null)
       });
