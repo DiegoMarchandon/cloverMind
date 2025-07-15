@@ -30,17 +30,17 @@ export default function MainForm({setTreeData}:MainFormProps) {
       <Head>
         <title>CloverMind - Inicio</title>
       </Head>
-      <main className="min-h-screen flex items-center justify-center bg-gray-100">
-        <form className="bg-white p-6 rounded-lg shadow-md space-y-4 w-full max-w-sm text-black" onSubmit={handleSubmit}>
-          <h1 className="text-2xl font-bold text-center">Formulario básico</h1>
+      <main className="relative min-h-screen flex items-center justify-center bg-black">
+        <form className="relative bg-gray-900 p-6 rounded-lg shadow-lg space-y-4 w-full max-w-sm text-white border-2 border-cyan-400 shadow-[0_0_15px_cyan] transition" onSubmit={handleSubmit}>
+          <h1 className="text-2xl font-bold text-center text-cyan-400">Formulario básico</h1>
 
           <div>
-            <label className="block mb-1 text-sm font-medium">Prompt</label>
+            <label className="block mb-1 text-sm font-medium text-cyan-300">Prompt</label>
             <input
             ref={inputRef}
             id='inputTexto'
               type="text"
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-transparent border border-cyan-400 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400 placeholder-cyan-500"
               placeholder="Describí tu árbol"
               pattern="([A-Za-zÁÉÍÓÚáéíóúÑñ\d]+(\s[A-Za-zÁÉÍÓÚáéíóúÑñ\d]+)*)"
               minLength={3}
@@ -49,12 +49,35 @@ export default function MainForm({setTreeData}:MainFormProps) {
             />
           </div>
 
-          <button
+          <div className="relative group">
+              <button
+                type="submit"
+                className="group w-full relative bg-cyan-500 text-black font-semibold py-2 px-4 rounded hover:bg-pink-500 transition shadow-[0_0_10px_cyan] hover:shadow-[0_0_15px_pink]"
+              >
+                Generar Diagrama
+              </button>
+              <div
+                className="absolute left-1/2 -translate-x-1/2 bottom-[-80px] w-[70%] h-6 opacity-40 blur-xl transition-all duration-300 shadow-[0_0_10px_cyan] bg-cyan-400 group-hover:bg-pink-400"
+                style={{
+                  clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
+                }}
+              >    
+          </div>
+</div>
+          {/* <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+            className="peer w-full relative bg-cyan-500 text-black font-semibold py-2 px-4 rounded hover:bg-pink-500 transition shadow-[0_0_10px_cyan] hover:shadow-[0_0_15px_pink]"
           >
             Generar Diagrama
+
           </button>
+          <div
+            className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] w-[70%] h-6 opacity-40 blur-md transition-all duration-300 peer-hover:bg-pink-400"
+            style={{
+              background: 'linear-gradient(to bottom, #22d3ee, #000)', // cyan-400 a negro
+              clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
+              }}
+          ></div> */}
         </form>
       </main>
     </>
