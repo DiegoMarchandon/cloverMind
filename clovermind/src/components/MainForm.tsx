@@ -50,34 +50,22 @@ export default function MainForm({setTreeData}:MainFormProps) {
           </div>
 
           <div className="relative group">
-              <button
-                type="submit"
-                className="group w-full relative bg-cyan-500 text-black font-semibold py-2 px-4 rounded hover:bg-pink-500 transition shadow-[0_0_10px_cyan] hover:shadow-[0_0_15px_pink]"
-              >
-                Generar Diagrama
-              </button>
-              <div
-                className="absolute left-1/2 -translate-x-1/2 bottom-[-80px] w-[70%] h-6 opacity-40 blur-xl transition-all duration-300 shadow-[0_0_10px_cyan] bg-cyan-400 group-hover:bg-pink-400"
-                style={{
-                  clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
-                }}
-              >    
-          </div>
-</div>
-          {/* <button
-            type="submit"
-            className="peer w-full relative bg-cyan-500 text-black font-semibold py-2 px-4 rounded hover:bg-pink-500 transition shadow-[0_0_10px_cyan] hover:shadow-[0_0_15px_pink]"
-          >
-            Generar Diagrama
-
-          </button>
-          <div
-            className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] w-[70%] h-6 opacity-40 blur-md transition-all duration-300 peer-hover:bg-pink-400"
-            style={{
-              background: 'linear-gradient(to bottom, #22d3ee, #000)', // cyan-400 a negro
-              clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
+            <button
+              type="submit"
+              className="group w-full relative bg-cyan-500 text-black font-semibold py-2 px-4 rounded hover:bg-pink-500 transition shadow-[0_0_10px_cyan] hover:shadow-[0_0_15px_pink]"
+            >
+              Generar Diagrama
+            </button>
+            <div
+              className="absolute left-1/2 -translate-x-1/2 bottom-[-80px] w-[85%] h-10 opacity-40 blur-xl transition-all duration-300 shadow-[0_0_50px_cyan] bg-cyan-400 group-hover:bg-pink-400 group-hover:blur-md"
+              style={{
+                // background: 'linear-gradient(to bottom,rgba(34, 238, 228, 0.6) 0%,rgba(34, 238, 228, 0.6) 20%,#000000 40%,#000000 100%)',
+                clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
               }}
-          ></div> */}
+            >    
+            </div>
+          </div>
+          
         </form>
       </main>
     </>

@@ -65,23 +65,48 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     const g = svg.append('g').attr('transform', `translate(${dy * 2}, ${dx*5})`); //grupo que centra el árbol
 
     // Enlaces (lineas; conexiones entre nodos)
+    // g.append('g')
+    //   .attr('fill', 'none')
+    //   .attr('stroke', '#0ff')
+    //   .attr('stroke-opacity', 0.4)
+    //   .attr('stroke-width', 3.5)
+    //   .attr('box-shadow',)
+    //   .selectAll('path')
+    //   .data(links)
+    //   .join('path')
+    //   .attr(
+    //     'd',
+    //     d => {
+    //       const [sx, sy] = project(d.source.x, d.source.y);
+    //       const [tx, ty] = project(d.target.x, d.target.y);
+    //       return `M${sx},${sy}C${(sx + tx) / 2},${sy} ${(sx + tx) / 2},${ty} ${tx},${ty}`;
+    //     }
+    //   );
+    const defs = svg.append('defs');
+    defs.append('filter')
+      .attr('id', 'shadow')
+      .append('feDropShadow')
+      .attr('dx', 0)
+      .attr('dy', 14)
+      .attr('stdDeviation', 3)
+      .attr('flood-color', '#3b82f6') // equivalente a blue-500
+      .attr('flood-opacity', 0.5);
+    
     g.append('g')
+      .attr('filter', 'url(#shadow)')
       .attr('fill', 'none')
-      .attr('stroke', '#555')
+      .attr('stroke', '#0ff')
       .attr('stroke-opacity', 0.4)
-      .attr('stroke-width', 1.5)
+      .attr('stroke-width', 3.5)
       .selectAll('path')
       .data(links)
       .join('path')
-      .attr(
-        'd',
-        d => {
-          const [sx, sy] = project(d.source.x, d.source.y);
-          const [tx, ty] = project(d.target.x, d.target.y);
-          return `M${sx},${sy}C${(sx + tx) / 2},${sy} ${(sx + tx) / 2},${ty} ${tx},${ty}`;
-        }
-      );
-      
+      .attr('d', d => {
+        const [sx, sy] = project(d.source.x, d.source.y);
+        const [tx, ty] = project(d.target.x, d.target.y);
+        return `M${sx},${sy}C${(sx + tx) / 2},${sy} ${(sx + tx) / 2},${ty} ${tx},${ty}`;
+      });
+    
 
     // Nodos (círculos + texto)
     const node = g
@@ -99,13 +124,14 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       .text(d => d.data.nombre)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', 15)
+      .attr('fill', 'cyan')
+      .attr('font-size', 20)
       .attr('pointer-events','none');
     
     // estilos al nodo raíz
       text
     .filter(d => d.depth === 0)
-    .attr('fill', 'white')
+    .attr('fill', 'cyan')
     .attr('font-weight', 'bold')
     .attr('font-size', 30);
 
@@ -124,16 +150,16 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         .attr('width', bbox.width + 2 * paddingX)
         .attr('height', bbox.height + 2 * paddingY)
         .attr('rx', 10) // bordes redondeados opcionales
-        .attr('fill', '#999')
-        .attr('stroke', '#222')
-        .attr('stroke-width', 0.5);
+        .attr('fill', '#333')
+        .attr('stroke', '#0FF')
+        .attr('stroke-width', 1.7);
         // .attr('pointer-events','none');
       
       // estilos del nodo raíz
       if(d.depth === 0){
         rect
         .attr('fill', '#999')
-        .attr('stroke', '#f00')
+        .attr('stroke', '#0ff')
         .attr('stroke-width', 4.5);
         // .attr('pointer-events','none');
       }
@@ -172,9 +198,13 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
      */
     function started(this: SVGGElement,event: d3.D3DragEvent<SVGGElement,d3.HierarchyPointNode<TreeNode>, unknown>, d: d3.HierarchyPointNode<TreeNode>){
       // efecto visual para cambiar estilos al elemento arrastrado
+      d3.select(this).select('rect')
+      .attr('fill', '#0ff');
+
       d3.select(this)
       .raise()
-      .attr("stroke","orange");
+      .attr('stroke', 'black');
+
       console.log("drag iniciado");
       const [nodeX, nodeY] = project(d.x!, d.y!);
       const offsetX = event.x - nodeX;
@@ -190,7 +220,11 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         d.y = Math.sqrt((event.x - offsetX) ** 2 + (event.y - offsetY) ** 2);
         updateLinks();
       }).on("end",function(){
-        d3.select(this as SVGGElement).attr("stroke",null)
+        d3.select(this as SVGGElement)
+        .attr("stroke",null);
+
+        d3.select(this).select('rect')
+        .attr('fill', '#333');
       });
     }
 
@@ -201,12 +235,18 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       d3.drag<SVGGElement, d3.HierarchyPointNode<TreeNode>>()
         .on("start", started)
     );
-  
+
+    // resetear los estilos
+   /*  function dragended(event, d) {
+      d3.select(this).attr("stroke", "none");
+      d3.select(this).select('rect').attr("fill", "originalColor"); // reemplazá con tu color normal
+    } */
+
   }, [data]);
 
 
   return (
-    <div className="overflow-auto bg-white">
+    <div className="overflow-auto bg-black">
       <svg ref={svgRef} className="w-full h-auto" />
     </div>
   );
