@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRef } from 'react';
 
 type MainFormProps = {
-  setTreeData: (data:any) => void;
+  setTreeData: (data:unknown) => void;
 };
 
 export default function MainForm({setTreeData}:MainFormProps) {

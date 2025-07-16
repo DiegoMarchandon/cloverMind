@@ -16,7 +16,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   
   // const drag = d3.drag<SVGGElement,any>();
-  const drag = d3.drag<SVGGElement, d3.HierarchyPointNode<TreeNode>, unknown>();
+  // const drag = d3.drag<SVGGElement, d3.HierarchyPointNode<TreeNode>, unknown>();
 
 
   useEffect(() => {
@@ -27,8 +27,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     const width = 500;
     const dx = 60; //espaciado vertical entre niveles/separación radial
     const dy = width; //centra el SVG
-    // const tree = d3.tree<TreeNode>().nodeSize([dx, dy]);
-    
+
     // 2) conversión de coordenadas polares a cartesianas con función project
     function project(x: number, y: number):[number,number] { //<-- esta función devolverá un array con exactamente dos valores numéricos
       return [y * Math.cos(x - Math.PI / 2), y * Math.sin(x - Math.PI / 2)];
@@ -45,7 +44,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     // const height = Math.max(400, dx * (root.height + 2)); // asegura mínimo de 200px
 
     //1) coordenadas polares:
-    // const radius = width / 2;
+
     const radius = dx * (root.height +4);
     // distribución de los nodos en el círculo / separación angular entre nodos
     const tree = d3.tree<TreeNode>().size([2 * Math.PI,radius*2]);
@@ -65,23 +64,6 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     const g = svg.append('g').attr('transform', `translate(${dy * 2}, ${dx*5})`); //grupo que centra el árbol
 
     // Enlaces (lineas; conexiones entre nodos)
-    // g.append('g')
-    //   .attr('fill', 'none')
-    //   .attr('stroke', '#0ff')
-    //   .attr('stroke-opacity', 0.4)
-    //   .attr('stroke-width', 3.5)
-    //   .attr('box-shadow',)
-    //   .selectAll('path')
-    //   .data(links)
-    //   .join('path')
-    //   .attr(
-    //     'd',
-    //     d => {
-    //       const [sx, sy] = project(d.source.x, d.source.y);
-    //       const [tx, ty] = project(d.target.x, d.target.y);
-    //       return `M${sx},${sy}C${(sx + tx) / 2},${sy} ${(sx + tx) / 2},${ty} ${tx},${ty}`;
-    //     }
-    //   );
     const defs = svg.append('defs');
     defs.append('filter')
       .attr('id', 'shadow')
@@ -114,7 +96,6 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       .selectAll('g')
       .data(root.descendants())
       .join('g')
-      // .attr('transform', (d: any) => `translate(${d.y},${d.x})`);
       .attr('transform', d => {
         const [x, y] = project(d.x!, d.y!);
         return `translate(${x},${y})`;
@@ -153,7 +134,6 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         .attr('fill', '#333')
         .attr('stroke', '#0FF')
         .attr('stroke-width', 1.7);
-        // .attr('pointer-events','none');
       
       // estilos del nodo raíz
       if(d.depth === 0){
@@ -161,7 +141,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         .attr('fill', '#999')
         .attr('stroke', '#0ff')
         .attr('stroke-width', 4.5);
-        // .attr('pointer-events','none');
+
       }
     });
     
@@ -228,19 +208,10 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       });
     }
 
-    //   (node as d3.Selection<SVGGElement, d3.HierarchyPointNode<TreeNode>, any, any>)
-    // .call(drag)
-    // .on("start", started);
     node.call(
       d3.drag<SVGGElement, d3.HierarchyPointNode<TreeNode>>()
         .on("start", started)
     );
-
-    // resetear los estilos
-   /*  function dragended(event, d) {
-      d3.select(this).attr("stroke", "none");
-      d3.select(this).select('rect').attr("fill", "originalColor"); // reemplazá con tu color normal
-    } */
 
   }, [data]);
 
