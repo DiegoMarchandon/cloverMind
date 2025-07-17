@@ -192,7 +192,9 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       const offsetY = event.y - nodeY;
   
       // eventos posteriores 
-      event.on("drag",function(event: any){
+      event.on("drag",function(
+        event: d3.D3DragEvent<SVGGElement, d3.HierarchyPointNode<TreeNode>, unknown>
+      ){
         d3.select(this as SVGGElement)
         .attr('transform',
           `translate(${event.x-offsetX},${event.y-offsetY})`
