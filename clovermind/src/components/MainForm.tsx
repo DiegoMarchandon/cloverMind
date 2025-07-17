@@ -1,9 +1,10 @@
 "use client";
 import Head from 'next/head';
 import { useRef } from 'react';
+import { TreeNode } from './d3Components/TreeDiagram';
 
 type MainFormProps = {
-  setTreeData: (data:unknown) => void;
+  setTreeData: (data:TreeNode | null) => void;
 };
 
 export default function MainForm({setTreeData}:MainFormProps) {

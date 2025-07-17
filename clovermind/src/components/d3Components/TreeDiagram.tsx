@@ -3,9 +3,10 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 
-type TreeNode = {
+export type TreeNode = {
   nombre: string;
   hijos?: TreeNode[];
+  children?:TreeNode[];
 };
 
 type TreeDiagramProps = {
@@ -33,7 +34,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       return [y * Math.cos(x - Math.PI / 2), y * Math.sin(x - Math.PI / 2)];
     }
 
-    function transformarEstructura(nodo: any): any { // <-- devuelve cualquier tipo
+    function transformarEstructura(nodo: TreeNode): TreeNode { // <-- devuelve cualquier tipo
       return {
         ...nodo,
         children: nodo.hijos?.map(transformarEstructura)

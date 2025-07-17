@@ -1,11 +1,11 @@
 "use client";
-// import Image from "next/image";
 import MainForm from '../components/MainForm';
 import TreeDiagram from "@/components/d3Components/TreeDiagram";
 import {useState} from 'react';
+import { TreeNode } from '@/components/d3Components/TreeDiagram';
 
 export default function Home() {
-  const [treeData,setTreeData] = useState(null);
+  const [treeData,setTreeData] = useState<TreeNode | null>(null);
 
   // const plantillaJSON = {
   //   "nombre": "Aprender JavaScript",
