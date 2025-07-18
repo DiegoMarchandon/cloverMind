@@ -95,7 +95,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     const node = g
       .append('g')
       .selectAll('g')
-      .data(root.descendants())
+      .data(treeData.descendants())
       .join('g')
       .attr('transform', d => {
         const [x, y] = project(d.x!, d.y!);
@@ -211,7 +211,9 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       });
     }
 
-    node.call(
+    const typedNode = node as d3.Selection<SVGGElement, d3.HierarchyPointNode<TreeNode>, SVGGElement, unknown>;
+
+    typedNode.call(
       d3.drag<SVGGElement, d3.HierarchyPointNode<TreeNode>>()
         .on("start", started)
     );
