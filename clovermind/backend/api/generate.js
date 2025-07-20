@@ -15,17 +15,19 @@ app.post('/api/generate', function (req, res) {
         // Simula una respuesta JSON
         var simulatedResponse = {
             response: JSON.stringify({
-                nombre: "Productividad",
-                hijos: [
-                    {
-                        nombre: "Hábitos",
-                        hijos: [
-                            { nombre: "Mañana" },
-                            { nombre: "Noche" }
-                        ]
-                    }
+                "nombre": "Productividad",
+                "shortInfo": "Técnicas para mejorar el rendimiento personal y profesional.",
+                "hijos": [
+                  {
+                    "nombre": "Hábitos",
+                    "shortInfo": "Conductas diarias que influyen en la productividad.",
+                    "hijos": [
+                      { "nombre": "Mañana", "shortInfo": "Rutinas para comenzar el día con energía.", "hijos": [] },
+                      { "nombre": "Noche", "shortInfo": "Acciones que ayudan a cerrar el día y descansar bien.", "hijos": [] }
+                    ]
+                  }
                 ]
-            })
+              })
         };
         res.json(simulatedResponse);
     }
