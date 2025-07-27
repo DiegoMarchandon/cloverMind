@@ -7,65 +7,69 @@ import { TreeNode } from '@/components/d3Components/TreeDiagram';
 export default function Home() {
   const [treeData,setTreeData] = useState<TreeNode | null>(null);
 
-  /* const plantillaJSON = {
-    "nombre": "Aprender JavaScript",
-    "hijos": [
+  const plantillaJSON = {
+    nombre: "Aprender JavaScript",
+    shortInfo: "Domina la programación con este lenguaje de código.",
+    hijos: [
       {
-        "nombre": "Introducción",
-        "hijos": [
-          { "nombre": "Qué es JavaScript", "hijos": [] },
-          { "nombre": "Historia y evolución", "hijos": [] }
-        ]
-      },
-      {
-        "nombre": "Conceptos Básicos",
-        "hijos": [
+        nombre: "Fundamentos",
+        shortInfo: "Entender los conceptos básicos y estructuras del lenguaje.",
+        hijos: [
           {
-            "nombre": "Variables y tipos de datos",
-            "hijos": [
-              { "nombre": "Primitivos (string, number, boolean)" },
-              { "nombre": "Referenciados (array, object, function)" }
-            ]
+            nombre: "Variables y Tipos",
+            shortInfo: "Comprender la declaración de variables y su tipo en JavaScript."
           },
           {
-            "nombre": "Operadores y estructuras de control",
-            "hijos": [
-              { "nombre": "Condicionales (if/else, switch)" },
-              { "nombre": "Iteraciones (for, while, do-while)" }
-            ]
-          },
-          {
-            "nombre": "Funciones y modularidad",
-            "hijos": [
-              { "nombre": "Definición de funciones" },
-              { "nombre": "Uso de callbacks y closures" }
-            ]
+            nombre: "Tipos de Dato",
+            shortInfo: "Entender los diferentes tipos de datos primitivos y objetos en JavaScript."
           }
         ]
       },
       {
-        "nombre": "Semántica y Best Practices",
-        "hijos": [
-          { "nombre": "Variables y scopes", "hijos": [] },
-          { "nombre": "Uso de comments y documentation", "hijos": [] }
+        nombre: "Control de Flujo",
+        shortInfo: "Aprender a controlar el flujo de ejecución con sentencias condicionales.",
+        hijos: [
+          {
+            nombre: "Condicionales",
+            shortInfo: "Entender la estructura de las sentencias if y else."
+          },
+          {
+            nombre: "Bucles y Sentencias",
+            shortInfo: "Aprender a utilizar bucles for, while y do-while para controlar el flujo de ejecución."
+          }
         ]
       },
       {
-        "nombre": "Avanzados",
-        "hijos": [
-          { "nombre": "Manipulación del DOM (Document Object Model)", "hijos": [] },
-          { "nombre": "Uso de bibliotecas y frameworks (React, Angular, Vue.js)", "hijos": [] }
+        nombre: "Funciones y Objetos",
+        shortInfo: "Aprender a crear funciones y objetos en JavaScript.",
+        hijos: [
+          {
+            nombre: "Funciones",
+            shortInfo: "Entender la creación de funciones puras y impuras en JavaScript."
+          },
+          {
+            nombre: "Objetos y Propiedades",
+            shortInfo: "Aprender a crear objetos y asignar propiedades en JavaScript."
+          }
         ]
       },
       {
-        "nombre": "Herramientas Comunes",
-        "hijos": [
-          { "nombre": "Editores y IDEs (Visual Studio Code, IntelliJ IDEA)" },
-          { "nombre": "Bibliotecas y módulos (Lodash, jQuery)" }
+        nombre: "Herramientas y Prácticas",
+        shortInfo: "Domina las herramientas y prácticas comunes para el desarrollo con JavaScript.",
+        hijos: [
+          {
+            nombre: "Consola y Debugging",
+            shortInfo: "Aprender a utilizar la consola y técnicas de depuración en JavaScript."
+          },
+          {
+            nombre: "Herramientas para Desarrollo",
+            shortInfo: "Entender las herramientas comunes como Node.js, npm y Browserify."
+          }
         ]
       }
     ]
-  } */
+  }
+
   
 
   return (
@@ -75,15 +79,15 @@ export default function Home() {
       <main>
         <MainForm setTreeData={setTreeData}/>
         {/* si hay datos, renderizo el árbol */}
-        {
+        {/* {
           treeData?(
             <TreeDiagram data={treeData}/>
           ):(
             <p className="text-gray-500">Cargando árbol...</p>
           )
-        }
+        } */}
         {/* prueba estática para acomodar el árbol */}
-        {/* <TreeDiagram data={plantillaJSON}/> */}
+        <TreeDiagram data={plantillaJSON}/>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <p>Footer Content</p>

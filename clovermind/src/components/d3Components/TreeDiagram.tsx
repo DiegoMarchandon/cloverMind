@@ -1,10 +1,12 @@
 'use client';
 
 import * as d3 from 'd3';
+import * as d3Tip from 'd3-tip';
 import { useEffect, useRef } from 'react';
 
 export type TreeNode = {
   nombre: string;
+  shortInfo: string;
   hijos?: TreeNode[];
   children?:TreeNode[];
 };
@@ -55,7 +57,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     const links = treeData.links(); // <- Esto produce HierarchyPointLink
 
     const svg = d3.select(svgRef.current);
-
+    
     svg.selectAll('*').remove(); // Limpia SVG previo antes de renderizar
     svg
       .attr('viewBox',[radius/5,-radius,radius*5,radius*4]) //x, y, width, height; coordenadas del lienzo
@@ -146,6 +148,38 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       }
     });
     
+        // objeto d3-tip 
+        const tip = d3Tip
+        .default()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html((d: any) => {
+          return `<span>${d.data.shortInfo}</span>`;
+        })
+        .direction('n') // dirección del tooltip
+        .style('background-color', '#000000') // color de fondo del tooltip
+        .style('border', '1px solid #ccc') // borde del tooltip
+        .style('padding', '5px') // relleno del tooltip
+        .style('font-size', '12px') // tamaño de fuente del tooltip
+        .style('font-family', 'sans-serif'); // familia de fuentes del tooltip
+
+        svg.call(tip);
+
+        node
+        .on('mouseover', (event,d) => {
+          const nodeElement = event.target;
+          const datos = { ...d, x: nodeElement.getBoundingClientRect().x };
+          if(tip){
+            console.log("datos: ",datos);
+            console.log("tip: ",tip);
+            tip.show(datos, nodeElement);
+          }
+        })
+        .on('mouseout', (event,d) => {
+          if(tip){
+            tip.hide(d, event.target);
+          }
+        });
     // acá defino el comportamiento drag
   
     // 2) creo la función para actualizar los links
@@ -192,6 +226,8 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       const offsetY = event.y - nodeY;
   
       // eventos posteriores 
+      
+      // Evento drag 
       event.on("drag",function(
         event: d3.D3DragEvent<SVGGElement, d3.HierarchyPointNode<TreeNode>, unknown>
       ){
@@ -210,6 +246,9 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         .attr('fill', '#333');
       });
     }
+      // Evento de hover
+
+
 
     const typedNode = node as d3.Selection<SVGGElement, d3.HierarchyPointNode<TreeNode>, SVGGElement, unknown>;
 
@@ -219,6 +258,8 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     );
 
   }, [data]);
+
+  
 
 
   return (
