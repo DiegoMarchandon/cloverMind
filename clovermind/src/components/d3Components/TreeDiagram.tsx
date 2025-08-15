@@ -159,7 +159,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
           return `<span>${d.data.shortInfo}</span>`;
         })
         .direction('n') // dirección del tooltip
-        .style('background-color', '#000000') // color de fondo del tooltip
+        .style('background-color', '#2d2d2d') // color de fondo del tooltip
         .style('border', '1px solid #ccc') // borde del tooltip
         .style('padding', '5px') // relleno del tooltip
         .style('font-size', '12px') // tamaño de fuente del tooltip
