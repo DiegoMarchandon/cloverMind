@@ -149,9 +149,12 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     });
     
         // objeto d3-tip 
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const tooltip = (d3Tip as any)()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .html((d: any) => {
           return `<span>${d.data.shortInfo}</span>`;
         })
