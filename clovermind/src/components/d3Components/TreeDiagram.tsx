@@ -1,7 +1,7 @@
 'use client';
 
 import * as d3 from 'd3';
-import * as d3Tip from 'd3-tip';
+import d3Tip from 'd3-tip';
 import { useEffect, useRef } from 'react';
 
 export type TreeNode = {
@@ -149,8 +149,7 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     });
     
         // objeto d3-tip 
-        const tip = d3Tip
-        .default()
+        const tooltip = (d3Tip as any)()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
         .html((d: any) => {
@@ -163,21 +162,21 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
         .style('font-size', '12px') // tamaño de fuente del tooltip
         .style('font-family', 'sans-serif'); // familia de fuentes del tooltip
 
-        svg.call(tip);
+        svg.call(tooltip);
 
         node
         .on('mouseover', (event,d) => {
           const nodeElement = event.target;
           const datos = { ...d, x: nodeElement.getBoundingClientRect().x };
-          if(tip){
+          if(tooltip){
             console.log("datos: ",datos);
-            console.log("tip: ",tip);
-            tip.show(datos, nodeElement);
+            console.log("tip: ",tooltip);
+            tooltip.show(datos, nodeElement);
           }
         })
         .on('mouseout', (event,d) => {
-          if(tip){
-            tip.hide(d, event.target);
+          if(tooltip){
+            tooltip.hide(d, event.target);
           }
         });
     // acá defino el comportamiento drag
