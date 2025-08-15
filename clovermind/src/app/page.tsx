@@ -7,7 +7,7 @@ import { TreeNode } from '@/components/d3Components/TreeDiagram';
 export default function Home() {
   const [treeData,setTreeData] = useState<TreeNode | null>(null);
 
-  const plantillaJSON = {
+  /* const plantillaJSON = {
     nombre: "Aprender JavaScript",
     shortInfo: "Domina la programación con este lenguaje de código.",
     hijos: [
@@ -68,7 +68,7 @@ export default function Home() {
         ]
       }
     ]
-  }
+  } */
 
   
 
@@ -79,15 +79,15 @@ export default function Home() {
       <main>
         <MainForm setTreeData={setTreeData}/>
         {/* si hay datos, renderizo el árbol */}
-        {/* {
+        {
           treeData?(
             <TreeDiagram data={treeData}/>
           ):(
             <p className="text-gray-500">Cargando árbol...</p>
           )
-        } */}
+        }
         {/* prueba estática para acomodar el árbol */}
-        <TreeDiagram data={plantillaJSON}/>
+        {/* <TreeDiagram data={plantillaJSON}/> */}
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <p>Footer Content</p>
