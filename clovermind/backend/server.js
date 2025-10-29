@@ -11,46 +11,61 @@ app.use(bodyParser.json());
 app.post('/generate', async (req, res) => {
   const { texto } = req.body;
   console.log('Texto recibido:', req.body.texto);
-  const prompt = `
-  Dado el siguiente texto: "${texto}"
+//   const prompt = `
 
-Genera un árbol mental en formato JSON.  
-El árbol debe tener al menos tres niveles de profundidad.  
-Cada nodo debe tener:
-- Un campo 'nombre' con un título claro.
-- Un campo 'shortInfo' con una breve descripción de ese nodo (1 o 2 líneas).
-- Un array 'hijos', con nombres específicos y variados.
+// Genera un JSON válido para un árbol mendal sobre: ${texto}.  
+// El árbol debe tener cinco niveles de profundidad.  
+// Cada nodo debe tener:
+// - Un campo 'nombre' con un título claro.
+// - Un campo 'shortInfo' con una breve descripción de ese nodo (1 o 2 líneas).
+// - Un array 'hijos', con nombres concretos relacionados a áreas, temas o técnicas específicas.
 
-Evitar términos genéricos como 'introducción', 'especialidad', 'conceptos básicos', 'semántica', etc.,  
-Y en caso de usarlos, especificar lo que abarcan en los nodos hijos.
+// Si se mencionan términos genéricos como 'introducción', 'especialidad', 'conceptos básicos', 'semántica', etc., 
+// especificar lo que abarcan en los nodos hijos.
+// Incluí temas avanzados como técnicas, metodologías, herramientas, frameworks, buenas prácticas y  bibliotecas si aplica.
 
-Incluí temas avanzados, buenas prácticas y herramientas comunes si aplica.
+// Ejemplo de formato:
 
-Ejemplo de formato:
+// {
+//   "nombre": "Productividad",
+//   "shortInfo": "Técnicas y hábitos para optimizar el tiempo y energía.",
+//   "hijos": [
+//     {
+//       "nombre": "Hábitos",
+//       "shortInfo": "Acciones repetidas que afectan la productividad diaria.",
+//       "hijos": [
+//         { "nombre": "Mañana", "shortInfo": "Rutinas al iniciar el día que aumentan el foco." },
+//         { "nombre": "Noche", "shortInfo": "Hábitos para cerrar el día y mejorar el descanso." }
+//       ]
+//     }
+//   ]
+// }`;
+const prompt = `Genera SOLAMENTE un JSON válido para un árbol mental sobre "${texto}".
+Máximo 3 niveles de profundidad y 3-4 hijos por nodo.
 
+Formato EXCLUSIVO:
 {
-  "nombre": "Productividad",
-  "shortInfo": "Técnicas y hábitos para optimizar el tiempo y energía.",
-  "hijos": [
-    {
-      "nombre": "Hábitos",
-      "shortInfo": "Acciones repetidas que afectan la productividad diaria.",
-      "hijos": [
-        { "nombre": "Mañana", "shortInfo": "Rutinas al iniciar el día que aumentan el foco." },
-        { "nombre": "Noche", "shortInfo": "Hábitos para cerrar el día y mejorar el descanso." }
-      ]
-    }
-  ]
-}`;
+  "nombre": "string",
+  "shortInfo": "string", 
+  "hijos": []
+}
+
+RESPONDE ÚNICAMENTE CON EL JSON, sin texto adicional.`;
 
   try {
     const response = await fetch('http://localhost:11434/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama3',
-        prompt,
-        stream: false
+        model: 'gemma3:4b',
+        prompt: prompt,
+        stream: false,
+        options: {
+          temperature: 0.3, // menor variabilidad,
+          num_predict: 1200, // limite de tokens
+          top_k: 30,
+          top_p: 0.8
+        }
       })
     });
     const text = await response.text();
@@ -67,12 +82,25 @@ Ejemplo de formato:
     }
 
     const match = data.response.match(/\{[\s\S]*\}/);
-    const jsonOutput = match ? JSON.parse(match[0]) : null;
+    if(!match){
+      console.error("No se pudo extraer JSON de: ",data.response);
+      return res.status(500).json({ error: 'no se pudo generar JSON válido.' });
+    }
 
+    // Después de recibir la respuesta
+    console.log("Respuesta completa:", data.response);
+
+    // Limpia la respuesta antes de parsear
+    const cleanResponse = data.response
+      .replace(/```json\n?/g, '')
+      .replace(/```\n?/g, '')
+      .trim();
+
+    const jsonOutput = JSON.parse(cleanResponse);
     res.json({ arbol: jsonOutput }); //retorno una respuesta JSON
   } catch (error) {
-    console.error('Error generando árbol:', error);
-    res.status(500).json({ error: 'Error generando árbol mental' });
+    console.error('Error JSON inválido. Raw:', cleanResponse);
+    res.status(500).json({ error: 'Error generando árbol mental',partial:cleanResponse });
   }
 });
 

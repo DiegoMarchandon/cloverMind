@@ -251,7 +251,6 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
       // Evento de hover
 
 
-
     const typedNode = node as d3.Selection<SVGGElement, d3.HierarchyPointNode<TreeNode>, SVGGElement, unknown>;
 
     typedNode.call(
@@ -260,8 +259,6 @@ export default function TreeDiagram({ data }: TreeDiagramProps) {
     );
 
   }, [data]);
-
-  
 
 
   return (
