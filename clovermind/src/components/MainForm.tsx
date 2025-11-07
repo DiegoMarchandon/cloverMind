@@ -31,7 +31,7 @@ export default function MainForm({setTreeData}:MainFormProps) {
       <Head>
         <title>CloverMind - Inicio</title>
       </Head>
-      <main className="relative min-h-screen flex items-center justify-center bg-black">
+      <main className="relative min-h-screen flex items-center justify-center bg-gray-800">
         <form className="relative bg-gray-900 p-6 rounded-lg shadow-lg space-y-4 w-full max-w-sm text-white border-2 border-cyan-400 shadow-[0_0_15px_cyan] transition" onSubmit={handleSubmit}>
           <h1 className="text-2xl font-bold text-center text-cyan-400">Formulario básico</h1>
 
@@ -58,9 +58,9 @@ export default function MainForm({setTreeData}:MainFormProps) {
               Generar Diagrama
             </button>
             <div
-              className="absolute left-1/2 -translate-x-1/2 bottom-[-80px] w-[85%] h-10 opacity-40 blur-xl transition-all duration-300 shadow-[0_0_50px_cyan] bg-cyan-400 group-hover:bg-pink-400 group-hover:blur-md"
+              className="absolute left-1/2 -translate-x-1/2 bottom-[-80px] w-[85%] h-10 opacity-40 blur-2xl transition-all duration-300 shadow-[0_0_50px_cyan] bg-cyan-400 group-hover:bg-pink-400 group-hover:blur-xl pointer-events-none"
               style={{
-                // background: 'linear-gradient(to bottom,rgba(34, 238, 228, 0.6) 0%,rgba(34, 238, 228, 0.6) 20%,#000000 40%,#000000 100%)',
+                // background: 'linear-gradient(to bottom,rgba(34, 238, 228, 0.85) 0%,rgba(34, 238, 228, 0.84) 20%,#000000 40%,#000000 100%)',
                 clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
               }}
             >    

@@ -2,6 +2,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
+// caché en el servidos ( para aumentar la velocidad en producción para todos los usuarios)
+// 1)
+const responseCache = new Map();
+
+
 const app = express();
 const PORT = 3001;
 
@@ -10,36 +15,15 @@ app.use(bodyParser.json());
 
 app.post('/generate', async (req, res) => {
   const { texto } = req.body;
+
+  // 2) cache por 1 hora para usuarios que pidan lo mismo.
+  const cached = responseCache.get(texto);
+  if(cached){
+    return res.json({arbol: cached, cached:true});
+  }
+
   console.log('Texto recibido:', req.body.texto);
-//   const prompt = `
 
-// Genera un JSON válido para un árbol mendal sobre: ${texto}.  
-// El árbol debe tener cinco niveles de profundidad.  
-// Cada nodo debe tener:
-// - Un campo 'nombre' con un título claro.
-// - Un campo 'shortInfo' con una breve descripción de ese nodo (1 o 2 líneas).
-// - Un array 'hijos', con nombres concretos relacionados a áreas, temas o técnicas específicas.
-
-// Si se mencionan términos genéricos como 'introducción', 'especialidad', 'conceptos básicos', 'semántica', etc., 
-// especificar lo que abarcan en los nodos hijos.
-// Incluí temas avanzados como técnicas, metodologías, herramientas, frameworks, buenas prácticas y  bibliotecas si aplica.
-
-// Ejemplo de formato:
-
-// {
-//   "nombre": "Productividad",
-//   "shortInfo": "Técnicas y hábitos para optimizar el tiempo y energía.",
-//   "hijos": [
-//     {
-//       "nombre": "Hábitos",
-//       "shortInfo": "Acciones repetidas que afectan la productividad diaria.",
-//       "hijos": [
-//         { "nombre": "Mañana", "shortInfo": "Rutinas al iniciar el día que aumentan el foco." },
-//         { "nombre": "Noche", "shortInfo": "Hábitos para cerrar el día y mejorar el descanso." }
-//       ]
-//     }
-//   ]
-// }`;
 const prompt = `Genera SOLAMENTE un JSON válido para un árbol mental sobre "${texto}".
 Máximo 3 niveles de profundidad y 3-4 hijos por nodo.
 
@@ -97,6 +81,9 @@ RESPONDE ÚNICAMENTE CON EL JSON, sin texto adicional.`;
       .trim();
 
     const jsonOutput = JSON.parse(cleanResponse);
+
+    // 3) Guardar en cache
+    responseCache.set(texto, jsonOutput);
     res.json({ arbol: jsonOutput }); //retorno una respuesta JSON
   } catch (error) {
     console.error('Error JSON inválido. Raw:', cleanResponse);
